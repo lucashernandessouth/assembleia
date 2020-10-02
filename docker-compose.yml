@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  postgressrv:
+    image: postgres
+    environment:      
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: votacao
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/votacao 
+    networks:
+      - postgres-compose-network
+      
+  teste-pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "lucas.hernandes@southsystem.com.br"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgressrv
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge
